@@ -4,6 +4,9 @@ namespace task1
 {
     public class List
     {
+        private Node _head;
+        public int Count { get; private set; }
+
         private class Node
         {
             public string Data { get; set; }
@@ -15,10 +18,9 @@ namespace task1
             }
         }
 
-        private Node _head;
-
         public void Add(string data)
         {
+            Count++;
             if (_head == null)
             {
                 _head = new Node(data);
@@ -36,19 +38,95 @@ namespace task1
             }
         }
 
-        public void Remove(int index)
+        public void Add(string data, int index)
         {
-            if (_head == null)
+            if (index < 0 || index > Count)
             {
-                return;
+                throw new ListIndexOutOfBoundsException();
             }
 
+            var cur = _head;
+            Node prev = null;
+            for (var i = 0; i < index; i++)
+            {
+                prev = cur;
+                cur = cur.Next;
+            }
+
+            Count++;
+            if (prev == null)
+            {
+                _head = new Node(data) { Next = cur };
+            }
+            else
+            {
+                var newNode = new Node(data);
+                prev.Next = newNode;
+                newNode.Next = cur;
+            }
+            
+        }
+
+        public void Remove(int index)
+        {
+            if (index < 0 || index >= Count)
+            {
+                throw new ListIndexOutOfBoundsException();
+            }
+
+            if (index == 0)
+            {
+                _head = _head.Next;
+                Count--;
+            }
+            else
+            {
+                var cur = _head;
+                var prev = _head;
+                for (var i = 0; i < index; i++)
+                {
+                    prev = cur;
+                    cur = cur.Next;
+                }
+
+                prev.Next = cur.Next;
+                Count--;
+            }
+            
+        }
+
+        public void Clear()
+        {
+            Count = 0;
+            _head = null;
+        }
+
+        public void Reverse()
+        {
+            var cur = _head;
+            Node prev = null;
+            while (cur != null)
+            {
+                var next = cur.Next;
+                cur.Next = prev; 
+                prev = cur;
+                cur = next;
+            }
+
+            _head = prev;
+        }
+
+        public string Get(int index)
+        {
             var cur = _head;
             for (var i = 0; i < index; i++)
             {
                 cur = cur.Next;
             }
+
+            return cur.Data;
         }
+        
         
         public void Print()
         {
@@ -69,6 +147,5 @@ namespace task1
             }
         }
     }
-
     
 }
