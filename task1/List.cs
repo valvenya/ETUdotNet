@@ -1,24 +1,27 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace task1
 {
-    public class List
+    public class List<T> : IEnumerable<T>
     {
         private Node _head;
         public int Count { get; private set; }
 
         private class Node
         {
-            public string Data { get; set; }
+            public T Data { get; }
             public Node Next { get; set; }
 
-            public Node(string data)
+            public Node(T data)
             {
                 Data = data;
             }
         }
+        
 
-        public void Add(string data)
+        public void Add(T data)
         {
             Count++;
             if (_head == null)
@@ -38,7 +41,7 @@ namespace task1
             }
         }
 
-        public void Add(string data, int index)
+        public void Add(T data, int index)
         {
             if (index < 0 || index > Count)
             {
@@ -116,7 +119,7 @@ namespace task1
             _head = prev;
         }
 
-        public string Get(int index)
+        public T Get(int index)
         {
             var cur = _head;
             for (var i = 0; i < index; i++)
@@ -126,18 +129,22 @@ namespace task1
 
             return cur.Data;
         }
-        
+
+        public bool IsEmpty()
+        {
+            return _head == null;
+        }
         
         public void Print()
         {
             if (_head == null)
             {
-                Console.WriteLine("List is empty\n");
+                Console.WriteLine("List is empty");
                 return;
             }
             
             var cur = _head;
-            Console.WriteLine("List elements:\n");
+            Console.WriteLine("List elements:");
             var i = 0;
             while (cur != null)
             {
@@ -145,6 +152,19 @@ namespace task1
                 cur = cur.Next;
                 i++;
             }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (var cur = _head; cur != null; cur = cur.Next)
+            {
+                yield return cur.Data;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
     
