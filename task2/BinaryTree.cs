@@ -249,7 +249,7 @@ namespace task2
         }
         
         //prints sorted array (left traverse)
-        private void _print(Node cur)
+        private static void _print(Node cur)
         {
             if (cur.Left != null)
             {
