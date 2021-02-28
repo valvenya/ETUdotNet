@@ -248,7 +248,7 @@ namespace task2
             }
         }
         
-        //prints sorted array (left traverse)
+        //prints sorted array (depth traverse)
         private static void _print(Node cur)
         {
             if (cur.Left != null)
